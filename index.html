@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -12,8 +11,6 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería para generar el PDF desde HTML -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
       :root {
@@ -383,8 +380,13 @@
           <span>Total:</span><span id="cartTotal">$0.00</span>
         </div>
         
-        <!-- BOTÓN DE DESCARGA PDF -->
-        
+        <!-- BOTÓN DE DESCARGA TXT -->
+        <button id="downloadTxtBtn" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold w-full rounded-lg py-3 mb-2 flex items-center justify-center gap-2 text-base transition-colors shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Descargar comprobante de pedido
+        </button>
 
         <button id="orderWhatsappBtn" class="btn-pink w-full rounded-lg py-3 mb-2 flex items-center justify-center gap-3 text-base">
           Finalizar compra por WhatsApp
@@ -493,7 +495,7 @@
       const addProductForm = document.getElementById("addProductForm");
       const orderWhatsappBtn = document.getElementById("orderWhatsappBtn");
       const continueShoppingBtn = document.getElementById("continueShoppingBtn");
-      const downloadPdfBtn = document.getElementById("downloadPdfBtn");
+      const downloadTxtBtn = document.getElementById("downloadTxtBtn");
 
       // Renderizar productos en la tienda
       function renderProducts(items) {
@@ -639,8 +641,8 @@
         window.open(`https://wa.me/5493814179467?text=${message}`, "_blank");
       });
 
-      // GENERACIÓN Y DESCARGA DEL PDF DEL CLIENTE
-      downloadPdfBtn.addEventListener("click", () => {
+      // GENERACIÓN Y DESCARGA DEL COMPROBANTE EN TXT
+      downloadTxtBtn.addEventListener("click", () => {
         if (cart.length === 0) {
           alert("El carrito está vacío. Agrega productos antes de descargar el comprobante.");
           return;
@@ -651,88 +653,45 @@
         const address = document.getElementById("clientAddress").value.trim() || "No especificado";
         const dateStr = new Date().toLocaleString();
 
+        let contenido = "========================================\n";
+        contenido += "     COMPROBANTE DE PEDIDO - DISTRIBUIDORA MAX\n";
+        contenido += "========================================\n";
+        contenido += `Fecha y Hora: ${dateStr}\n`;
+        contenido += "----------------------------------------\n";
+        contenido += "DATOS DEL CLIENTE:\n";
+        contenido += `Nombre: ${name}\n`;
+        contenido += `Teléfono: ${phone}\n`;
+        contenido += `Dirección/Localidad: ${address}\n`;
+        contenido += "----------------------------------------\n\n";
+        contenido += "DETALLE DE PRODUCTOS:\n\n";
+
         let totalGeneral = 0;
 
-        // Crear una estructura limpia de HTML para convertir a PDF
-        const element = document.createElement("div");
-        element.style.padding = "20px";
-        element.style.fontFamily = "Arial, sans-serif";
-        element.style.color = "#333";
-
-        let tableRows = "";
         cart.forEach((item, index) => {
           let subtotal = item.price * item.quantity;
           totalGeneral += subtotal;
-          tableRows += `
-            <tr style="border-bottom: 1px solid #eee;">
-              <td style="padding: 8px; text-align: center;">${index + 1}</td>
-              <td style="padding: 8px;">${item.name}</td>
-              <td style="padding: 8px; text-align: center;">${item.quantity}</td>
-              <td style="padding: 8px; text-align: right;">$${item.price.toLocaleString()}</td>
-              <td style="padding: 8px; text-align: right; font-weight: bold;">$${subtotal.toLocaleString()}</td>
-            </tr>
-          `;
+          contenido += `${index + 1}. ${item.name}\n`;
+          contenido += `   Cantidad: ${item.quantity}\n`;
+          contenido += `   Precio unitario: $${item.price.toLocaleString()}\n`;
+          contenido += `   Subtotal: $${subtotal.toLocaleString()}\n`;
+          contenido += "----------------------------------------\n";
         });
 
-        element.innerHTML = `
-          <div style="border: 2px solid #ff6b6b; padding: 25px; border-radius: 10px; background: #fff;">
-            <!-- ENCABEZADO -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff6b6b; padding-bottom: 15px; margin-bottom: 20px;">
-              <div>
-                <h1 style="color: #ff6b6b; margin: 0; font-size: 26px;">DISTRIBUIDORA MAX</h1>
-                <p style="margin: 3px 0 0 0; color: #666; font-size: 12px;">Comprobante de Pedido</p>
-              </div>
-              <div style="text-align: right; font-size: 12px; color: #555;">
-                <p style="margin: 0;"><strong>Fecha:</strong> ${dateStr}</p>
-                <p style="margin: 3px 0 0 0;"><strong>Contacto:</strong> +54 9 3814 17-9467</p>
-              </div>
-            </div>
+        contenido += `\nTOTAL A PAGAR: $${totalGeneral.toLocaleString()}\n`;
+        contenido += "========================================\n";
+        contenido += "¡Gracias por elegir a Distribuidora Max!\n";
 
-            <!-- DATOS DEL CLIENTE -->
-            <div style="background: #fdfbf0; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13px;">
-              <h3 style="margin: 0 0 8px 0; color: #e04f4f; font-size: 14px;">DATOS DEL CLIENTE</h3>
-              <p style="margin: 4px 0;"><strong>Nombre:</strong> ${name}</p>
-              <p style="margin: 4px 0;"><strong>Teléfono:</strong> ${phone}</p>
-              <p style="margin: 4px 0;"><strong>Dirección / Localidad:</strong> ${address}</p>
-            </div>
-
-            <!-- TABLA DE PRODUCTOS -->
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
-              <thead>
-                <tr style="background: #ff6b6b; color: white;">
-                  <th style="padding: 8px; text-align: center;">#</th>
-                  <th style="padding: 8px; text-align: left;">Producto</th>
-                  <th style="padding: 8px; text-align: center;">Cant.</th>
-                  <th style="padding: 8px; text-align: right;">P. Unit</th>
-                  <th style="padding: 8px; text-align: right;">Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${tableRows}
-              </tbody>
-            </table>
-
-            <!-- TOTAL -->
-            <div style="text-align: right; font-size: 18px; font-weight: bold; color: #333; margin-top: 20px; border-top: 2px solid #eee; padding-top: 10px;">
-              Total A Pagar: <span style="color: #e04f4f;">$${totalGeneral.toLocaleString()}</span>
-            </div>
-
-            <!-- PIE DE PÁGINA -->
-            <div style="margin-top: 30px; text-align: center; font-size: 11px; color: #888; border-top: 1px dashed #ccc; padding-top: 10px;">
-              ¡Gracias por tu compra en Distribuidora Max!
-            </div>
-          </div>
-        `;
-
-        const options = {
-          margin: 10,
-          filename: `Pedido_${name.replace(/\s+/g, '_')}_${Date.now()}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(options).from(element).save();
+        const blob = new Blob([contenido], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        
+        a.href = url;
+        a.download = `Pedido_${name.replace(/\s+/g, '_')}_${Date.now()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       });
 
       // Panel de Administración (Modal Login)
