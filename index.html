@@ -160,27 +160,6 @@
           Distribuidora Max
         </a>
         <nav class="flex items-center gap-6 text-base md:text-lg">
-          <button id="adminBtn" class="nav-button" aria-label="Acceso Administrador">
-            <svg fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <circle cx="12" cy="7" r="4" />
-              <path d="M5.5 21h13a2 2 0 0 0-13 0z" />
-            </svg>
-            <span id="adminName" class="hidden md:inline">Admin</span>
-          </button>
-          <button id="logoutBtn" aria-label="Salir" class="nav-button hidden">
-            <svg fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <path d="M16 17l5-5m0 0l-5-5m5 5H9" />
-              <path d="M12 19a9 9 0 1 1 0-14" />
-            </svg>
-            Salir
-          </button>
-          <button id="viewStoreBtn" aria-label="Ver Tienda" class="hidden md:flex nav-button">
-            <svg fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <path d="M3 3h18v4H3z" />
-              <path d="M7 7v14h10V7" />
-            </svg>
-            Ver Tienda
-          </button>
           <button id="cartBtn" aria-label="Carrito de compras" class="relative nav-button">
             <svg fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
@@ -248,78 +227,6 @@
         </form>
         <!-- Product Grid -->
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6"></div>
-      </section>
-
-      <!-- ADMIN PANEL -->
-      <section id="adminPanel" class="hidden bg-[var(--color-background-light)] rounded-2xl p-10 shadow-xl max-w-5xl mx-auto mb-16">
-        <h2 class="text-center text-4xl font-serif mb-8 text-[var(--color-text-dark)]">
-          Panel de Administración
-        </h2>
-        <div class="flex border border-[var(--color-border)] rounded-xl overflow-hidden mb-8 text-lg font-semibold">
-          <button id="adminTabList" class="w-1/2 py-4 bg-[var(--color-background-medium)] hover:bg-[var(--color-secondary)] focus:outline-none transition-colors text-[var(--color-text-dark)]">
-            Lista de Productos
-          </button>
-          <button id="adminTabAdd" class="w-1/2 py-4 hover:bg-[var(--color-secondary)] focus:outline-none bg-white transition-colors text-[var(--color-text-dark)]">
-            Agregar Producto
-          </button>
-        </div>
-
-        <!-- Product List -->
-        <div id="productListView">
-          <h3 class="font-serif font-semibold mb-5 text-2xl text-[var(--color-text-dark)]">Productos Existentes</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full table-auto text-left text-base border-collapse bg-white rounded-xl shadow-inner">
-              <thead class="bg-[var(--color-background-medium)] border-b border-[var(--color-border)]">
-                <tr>
-                  <th class="p-4">Imagen</th>
-                  <th class="p-4">Nombre</th>
-                  <th class="p-4">Categoría</th>
-                  <th class="p-4">Precio</th>
-                  <th class="p-4">Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="adminProductTableBody"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Add Product Form -->
-        <form id="addProductForm" class="hidden bg-white p-10 rounded-xl shadow-inner space-y-8">
-          <h3 class="font-serif font-semibold mb-6 text-2xl flex items-center gap-4 text-[var(--color-text-dark)]">
-            Agregar Nuevo Producto
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <label class="block">
-              <span class="text-base font-medium text-[var(--color-text-medium)]">Nombre del Producto</span>
-              <input id="productName" type="text" placeholder="Ej: Raza Adulto 15kg" class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required />
-            </label>
-            <label class="block">
-              <span class="text-base font-medium text-[var(--color-text-medium)]">URL de la Imagen</span>
-              <input id="productImageUrl" type="url" placeholder="https://..." class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required />
-            </label>
-          </div>
-          <label class="block">
-            <span class="text-base font-medium text-[var(--color-text-medium)]">Descripción</span>
-            <textarea id="productDescription" rows="4" placeholder="Describe el producto..." class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required></textarea>
-          </label>
-          <div class="grid grid-cols-2 gap-8">
-            <label class="block">
-              <span class="text-base font-medium text-[var(--color-text-medium)]">Precio</span>
-              <input id="productPrice" type="number" min="0" step="any" class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required />
-            </label>
-            <label class="block">
-              <span class="text-base font-medium text-[var(--color-text-medium)]">Categoría</span>
-              <select id="productCategory" class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required>
-                <option value="Raza">Raza</option>
-                <option value="Gran pastor">Gran pastor</option>
-                <option value="Pedigree">Pedigree</option>
-                <option value="Sabrositos">Sabrositos</option>
-                <option value="Otros">Otros</option>
-              </select>
-            </label>
-          </div>
-          <button type="submit" class="btn-pink w-full rounded-lg py-4 text-lg">Guardar Producto</button>
-        </form>
       </section>
     </main>
 
@@ -389,26 +296,6 @@
       </footer>
     </aside>
 
-    <!-- LOGIN MODAL -->
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-40 hidden">
-      <form id="loginForm" class="bg-[var(--color-background-light)] rounded-xl p-10 max-w-md w-full shadow-2xl relative" novalidate>
-        <button type="button" id="closeLogin" class="absolute top-4 right-4 text-[var(--color-text-medium)] hover:text-[var(--color-primary)]">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="w-7 h-7"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-        <h3 class="text-3xl font-serif font-semibold mb-6 text-[var(--color-text-dark)]">Acceso Administrador</h3>
-        <label class="block mb-6">
-          <span class="text-base text-[var(--color-text-medium)]">Email</span>
-          <input name="email" type="email" placeholder="admin@ejemplo.com" class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required />
-        </label>
-        <label class="block mb-8">
-          <span class="text-base text-[var(--color-text-medium)]">Contraseña</span>
-          <input name="password" type="password" placeholder="********" class="w-full mt-2 rounded-lg border border-[var(--color-border)] px-5 py-3 input-focus" required />
-        </label>
-        <button type="submit" class="btn-pink w-full rounded-lg py-4 text-lg">Ingresar</button>
-        <p id="loginError" class="text-red-600 mt-4 text-sm hidden"></p>
-      </form>
-    </div>
-
     <!-- JAVASCRIPT LOGIC -->
     <script>
       "use strict";
@@ -458,7 +345,6 @@
       ];
 
       let cart = [];
-      let isAdminLoggedIn = false;
 
       // Elementos DOM
       const productGrid = document.getElementById("productGrid");
@@ -471,20 +357,6 @@
       const searchInput = document.getElementById("searchInput");
       const categorySelect = document.getElementById("categorySelect");
       const priceSelect = document.getElementById("priceSelect");
-      const adminBtn = document.getElementById("adminBtn");
-      const loginModal = document.getElementById("loginModal");
-      const closeLogin = document.getElementById("closeLogin");
-      const loginForm = document.getElementById("loginForm");
-      const loginError = document.getElementById("loginError");
-      const adminPanel = document.getElementById("adminPanel");
-      const productShowcase = document.getElementById("productShowcase");
-      const viewStoreBtn = document.getElementById("viewStoreBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const adminProductTableBody = document.getElementById("adminProductTableBody");
-      const adminTabList = document.getElementById("adminTabList");
-      const adminTabAdd = document.getElementById("adminTabAdd");
-      const productListView = document.getElementById("productListView");
-      const addProductForm = document.getElementById("addProductForm");
       const orderWhatsappBtn = document.getElementById("orderWhatsappBtn");
       const continueShoppingBtn = document.getElementById("continueShoppingBtn");
 
@@ -521,222 +393,4 @@
         const priceFilter = priceSelect.value;
 
         const filtered = products.filter((p) => {
-          const matchesQuery = p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
-          const matchesCategory = category === "all" || p.category === category;
-          let matchesPrice = true;
-          if (priceFilter === "under30000") matchesPrice = p.price < 30000;
-          if (priceFilter === "30000to35000") matchesPrice = p.price >= 30000 && p.price <= 35000;
-          if (priceFilter === "over35000") matchesPrice = p.price > 35000;
-
-          return matchesQuery && matchesCategory && matchesPrice;
-        });
-
-        renderProducts(filtered);
-      }
-
-      searchInput.addEventListener("input", filterProducts);
-      categorySelect.addEventListener("change", filterProducts);
-      priceSelect.addEventListener("change", filterProducts);
-
-      // Carrito
-      window.addToCart = function (id) {
-        const product = products.find((p) => p.id === id);
-        const existing = cart.find((item) => item.id === id);
-        if (existing) {
-          existing.quantity++;
-        } else {
-          cart.push({ ...product, quantity: 1 });
-        }
-        updateCartUI();
-      };
-
-      window.changeQuantity = function (id, delta) {
-        const item = cart.find((i) => i.id === id);
-        if (item) {
-          item.quantity += delta;
-          if (item.quantity <= 0) {
-            cart = cart.filter((i) => i.id !== id);
-          }
-        }
-        updateCartUI();
-      };
-
-      function updateCartUI() {
-        cartItemsContainer.innerHTML = "";
-        let total = 0;
-        let count = 0;
-
-        if (cart.length === 0) {
-          cartItemsContainer.innerHTML = `<p class="text-center text-gray-500 py-10">Tu carrito está vacío.</p>`;
-        } else {
-          cart.forEach((item) => {
-            total += item.price * item.quantity;
-            count += item.quantity;
-            const div = document.createElement("div");
-            div.className = "flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-gray-100";
-            div.innerHTML = `
-              <div class="flex items-center gap-3">
-                <img src="${item.imageUrl}" class="w-12 h-12 object-contain bg-white rounded-md border p-1" />
-                <div>
-                  <h4 class="font-semibold text-xs text-gray-800">${item.name}</h4>
-                  <p class="text-xs text-gray-500">$${item.price.toLocaleString()} x ${item.quantity}</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-2">
-                <button onclick="changeQuantity('${item.id}', -1)" class="w-6 h-6 bg-gray-100 rounded font-bold text-xs">-</button>
-                <span class="text-xs font-semibold">${item.quantity}</span>
-                <button onclick="changeQuantity('${item.id}', 1)" class="w-6 h-6 bg-gray-100 rounded font-bold text-xs">+</button>
-              </div>
-            `;
-            cartItemsContainer.appendChild(div);
-          });
-        }
-
-        cartTotal.textContent = `$${total.toLocaleString()}`;
-        if (count > 0) {
-          cartCount.textContent = count;
-          cartCount.classList.remove("hidden");
-        } else {
-          cartCount.classList.add("hidden");
-        }
-      }
-
-      // Abrir / Cerrar Carrito
-      cartBtn.addEventListener("click", () => cartSidebar.classList.remove("translate-x-full"));
-      closeCart.addEventListener("click", () => cartSidebar.classList.add("translate-x-full"));
-      continueShoppingBtn.addEventListener("click", () => cartSidebar.classList.add("translate-x-full"));
-
-      // WhatsApp Checkout
-      orderWhatsappBtn.addEventListener("click", () => {
-        if (cart.length === 0) {
-          alert("El carrito está vacío.");
-          return;
-        }
-        const name = document.getElementById("clientName").value.trim();
-        const phone = document.getElementById("clientPhone").value.trim();
-        const address = document.getElementById("clientAddress").value.trim();
-
-        let message = `*NUEVO PEDIDO - DISTRIBUIDORA MAX*%0A%0A`;
-        if (name) message += `*Cliente:* ${name}%0A`;
-        if (phone) message += `*Teléfono:* ${phone}%0A`;
-        if (address) message += `*Dirección/Localidad:* ${address}%0A`;
-        message += `%0A*DETALLE DEL PEDIDO:*%0A`;
-
-        let total = 0;
-        cart.forEach((item) => {
-          let subtotal = item.price * item.quantity;
-          total += subtotal;
-          message += `- ${item.quantity}x ${item.name} ($${subtotal.toLocaleString()})%0A`;
-        });
-        message += `%0A*TOTAL A PAGAR:* $${total.toLocaleString()}`;
-        window.open(`https://wa.me/5493814179467?text=${message}`, "_blank");
-      });
-
-      // Panel de Administración (Modal Login)
-      adminBtn.addEventListener("click", () => {
-        if (!isAdminLoggedIn) {
-          loginModal.classList.remove("hidden");
-        } else {
-          adminPanel.classList.remove("hidden");
-          productShowcase.classList.add("hidden");
-          adminBtn.classList.add("hidden");
-          logoutBtn.classList.remove("hidden");
-        }
-      });
-
-      closeLogin.addEventListener("click", () => loginModal.classList.add("hidden"));
-
-      loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = loginForm.email.value;
-        const password = loginForm.password.value;
-        if (email === "admin@max.com" && password === "123456") {
-          isAdminLoggedIn = true;
-          loginModal.classList.add("hidden");
-          adminPanel.classList.remove("hidden");
-          productShowcase.classList.add("hidden");
-          adminBtn.classList.add("hidden");
-          logoutBtn.classList.remove("hidden");
-          renderAdminTable();
-          loginError.classList.add("hidden");
-          loginForm.reset();
-        } else {
-          loginError.textContent = "Credenciales incorrectas (Prueba admin@max.com / 123456)";
-          loginError.classList.remove("hidden");
-        }
-      });
-
-      logoutBtn.addEventListener("click", () => {
-        isAdminLoggedIn = false;
-        adminPanel.classList.add("hidden");
-        productShowcase.classList.remove("hidden");
-        logoutBtn.classList.add("hidden");
-        adminBtn.classList.remove("hidden");
-      });
-
-      viewStoreBtn.addEventListener("click", () => {
-        adminPanel.classList.add("hidden");
-        productShowcase.classList.remove("hidden");
-      });
-
-      // Pestañas admin
-      adminTabList.addEventListener("click", () => {
-        productListView.classList.remove("hidden");
-        addProductForm.classList.add("hidden");
-        adminTabList.classList.add("bg-[var(--color-background-medium)]");
-        adminTabAdd.classList.remove("bg-[var(--color-background-medium)]");
-      });
-
-      adminTabAdd.addEventListener("click", () => {
-        addProductForm.classList.remove("hidden");
-        productListView.classList.add("hidden");
-        adminTabAdd.classList.add("bg-[var(--color-background-medium)]");
-        adminTabList.classList.remove("bg-[var(--color-background-medium)]");
-      });
-
-      function renderAdminTable() {
-        adminProductTableBody.innerHTML = "";
-        products.forEach((p) => {
-          const row = document.createElement("tr");
-          row.className = "border-b border-[var(--color-border)]";
-          row.innerHTML = `
-            <td class="p-4"><img src="${p.imageUrl}" class="w-12 h-12 object-contain bg-white border p-1 rounded" /></td>
-            <td class="p-4 font-medium">${p.name}</td>
-            <td class="p-4">${p.category}</td>
-            <td class="p-4">$${p.price.toLocaleString()}</td>
-            <td class="p-4">
-              <button onclick="deleteProduct('${p.id}')" class="text-red-600 hover:underline font-semibold">Eliminar</button>
-            </td>
-          `;
-          adminProductTableBody.appendChild(row);
-        });
-      }
-
-      window.deleteProduct = function (id) {
-        products = products.filter((p) => p.id !== id);
-        renderProducts(products);
-        renderAdminTable();
-      };
-
-      addProductForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const newProduct = {
-          id: Date.now().toString(),
-          name: document.getElementById("productName").value,
-          imageUrl: document.getElementById("productImageUrl").value,
-          description: document.getElementById("productDescription").value,
-          price: parseFloat(document.getElementById("productPrice").value),
-          category: document.getElementById("productCategory").value,
-        };
-        products.push(newProduct);
-        renderProducts(products);
-        renderAdminTable();
-        addProductForm.reset();
-        adminTabList.click();
-      });
-
-      // Inicializar visualización de productos
-      renderProducts(products);
-    </script>
-  </body>
-</html>
+          const matchesQuery = p.name.
