@@ -367,7 +367,7 @@
 
       <!-- FORMULARIO CON DATOS DEL CLIENTE -->
       <div class="px-6 py-4 bg-gray-50 border-t border-[var(--color-border)]">
-        <h4 class="text-sm font-bold text-gray-700 mb-2">Datos para el comprobante / envío:</h4>
+        <h4 class="text-sm font-bold text-gray-700 mb-2">Datos para el envío:</h4>
         <div class="space-y-2">
           <input id="clientName" type="text" placeholder="Tu Nombre Completo" class="w-full text-sm p-2 border rounded border-gray-300 focus:outline-none focus:border-red-400" />
           <input id="clientPhone" type="tel" placeholder="Teléfono de contacto" class="w-full text-sm p-2 border rounded border-gray-300 focus:outline-none focus:border-red-400" />
@@ -379,14 +379,6 @@
         <div class="flex justify-between font-semibold font-serif mb-4 text-xl text-[var(--color-text-dark)]">
           <span>Total:</span><span id="cartTotal">$0.00</span>
         </div>
-        
-        <!-- BOTÓN DE DESCARGA TXT -->
-        <button id="downloadTxtBtn" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold w-full rounded-lg py-3 mb-2 flex items-center justify-center gap-2 text-base transition-colors shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Descargar comprobante de pedido
-        </button>
 
         <button id="orderWhatsappBtn" class="btn-pink w-full rounded-lg py-3 mb-2 flex items-center justify-center gap-3 text-base">
           Finalizar compra por WhatsApp
@@ -495,7 +487,6 @@
       const addProductForm = document.getElementById("addProductForm");
       const orderWhatsappBtn = document.getElementById("orderWhatsappBtn");
       const continueShoppingBtn = document.getElementById("continueShoppingBtn");
-      const downloadTxtBtn = document.getElementById("downloadTxtBtn");
 
       // Renderizar productos en la tienda
       function renderProducts(items) {
@@ -639,59 +630,6 @@
         });
         message += `%0A*TOTAL A PAGAR:* $${total.toLocaleString()}`;
         window.open(`https://wa.me/5493814179467?text=${message}`, "_blank");
-      });
-
-      // GENERACIÓN Y DESCARGA DEL COMPROBANTE EN TXT
-      downloadTxtBtn.addEventListener("click", () => {
-        if (cart.length === 0) {
-          alert("El carrito está vacío. Agrega productos antes de descargar el comprobante.");
-          return;
-        }
-
-        const name = document.getElementById("clientName").value.trim() || "No especificado";
-        const phone = document.getElementById("clientPhone").value.trim() || "No especificado";
-        const address = document.getElementById("clientAddress").value.trim() || "No especificado";
-        const dateStr = new Date().toLocaleString();
-
-        let contenido = "========================================\n";
-        contenido += "     COMPROBANTE DE PEDIDO - DISTRIBUIDORA MAX\n";
-        contenido += "========================================\n";
-        contenido += `Fecha y Hora: ${dateStr}\n`;
-        contenido += "----------------------------------------\n";
-        contenido += "DATOS DEL CLIENTE:\n";
-        contenido += `Nombre: ${name}\n`;
-        contenido += `Teléfono: ${phone}\n`;
-        contenido += `Dirección/Localidad: ${address}\n`;
-        contenido += "----------------------------------------\n\n";
-        contenido += "DETALLE DE PRODUCTOS:\n\n";
-
-        let totalGeneral = 0;
-
-        cart.forEach((item, index) => {
-          let subtotal = item.price * item.quantity;
-          totalGeneral += subtotal;
-          contenido += `${index + 1}. ${item.name}\n`;
-          contenido += `   Cantidad: ${item.quantity}\n`;
-          contenido += `   Precio unitario: $${item.price.toLocaleString()}\n`;
-          contenido += `   Subtotal: $${subtotal.toLocaleString()}\n`;
-          contenido += "----------------------------------------\n";
-        });
-
-        contenido += `\nTOTAL A PAGAR: $${totalGeneral.toLocaleString()}\n`;
-        contenido += "========================================\n";
-        contenido += "¡Gracias por elegir a Distribuidora Max!\n";
-
-        const blob = new Blob([contenido], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        
-        a.href = url;
-        a.download = `Pedido_${name.replace(/\s+/g, '_')}_${Date.now()}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
       });
 
       // Panel de Administración (Modal Login)
