@@ -12,6 +12,9 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Librería para generar el PDF desde HTML -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
       :root {
         --color-primary: #ff6b6b;
@@ -123,12 +126,6 @@
         user-select: none;
         border: 3px solid var(--color-background-light);
         box-shadow: 0 2px 5px var(--color-shadow-medium);
-      }
-
-      .footer-icon {
-        stroke: var(--color-text-dark);
-        width: 1.5rem;
-        height: 1.5rem;
       }
 
       .nav-button {
@@ -367,22 +364,37 @@
           </svg>
         </button>
       </header>
-      <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-6"></div>
+
+      <!-- Lista de productos añadidos -->
+      <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
+
+      <!-- FORMULARIO CON DATOS DEL CLIENTE -->
+      <div class="px-6 py-4 bg-gray-50 border-t border-[var(--color-border)]">
+        <h4 class="text-sm font-bold text-gray-700 mb-2">Datos para el comprobante / envío:</h4>
+        <div class="space-y-2">
+          <input id="clientName" type="text" placeholder="Tu Nombre Completo" class="w-full text-sm p-2 border rounded border-gray-300 focus:outline-none focus:border-red-400" />
+          <input id="clientPhone" type="tel" placeholder="Teléfono de contacto" class="w-full text-sm p-2 border rounded border-gray-300 focus:outline-none focus:border-red-400" />
+          <input id="clientAddress" type="text" placeholder="Dirección / Localidad" class="w-full text-sm p-2 border rounded border-gray-300 focus:outline-none focus:border-red-400" />
+        </div>
+      </div>
+
       <footer class="p-6 border-t border-[var(--color-border)] bg-white">
-        <div class="flex justify-between font-semibold font-serif mb-5 text-xl text-[var(--color-text-dark)]">
+        <div class="flex justify-between font-semibold font-serif mb-4 text-xl text-[var(--color-text-dark)]">
           <span>Total:</span><span id="cartTotal">$0.00</span>
         </div>
-        <!-- NUEVO BOTÓN DE DESCARGA -->
-        <button id="downloadCartBtn" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold w-full rounded-lg py-3 mb-3 flex items-center justify-center gap-2 text-base transition-colors shadow-sm">
+        
+        <!-- BOTÓN DE DESCARGA PDF -->
+        <button id="downloadPdfBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold w-full rounded-lg py-3 mb-2 flex items-center justify-center gap-2 text-base transition-colors shadow-sm">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          Descargar comprobante de pedido
+          Descargar pedido en PDF
         </button>
-        <button id="orderWhatsappBtn" class="btn-pink w-full rounded-lg py-4 mb-3 flex items-center justify-center gap-3 text-lg">
+
+        <button id="orderWhatsappBtn" class="btn-pink w-full rounded-lg py-3 mb-2 flex items-center justify-center gap-3 text-base">
           Finalizar compra por WhatsApp
         </button>
-        <button id="continueShoppingBtn" class="bg-transparent border border-[var(--color-border)] rounded-lg py-4 w-full text-[var(--color-text-dark)] font-semibold hover:bg-[var(--color-background-medium)] transition-colors">
+        <button id="continueShoppingBtn" class="bg-transparent border border-[var(--color-border)] rounded-lg py-2.5 w-full text-[var(--color-text-dark)] font-semibold hover:bg-[var(--color-background-medium)] transition-colors text-sm">
           Seguir comprando
         </button>
       </footer>
@@ -447,39 +459,7 @@
           imageUrl: "https://masonlineprod.vtexassets.com/arquivos/ids/158216-800-auto?v=637835127847900000&width=800&height=auto&aspect=true",
         },
         {
-          id: "6",
-          name: "GRAN PASTOR ADULTO 21KG",
-          description: "Alimento premium con 28% de proteína, Omega 3 y 6 para articulaciones sanas y pelaje brillante.",
-          price: 38500,
-          category: "Gran pastor",
-          imageUrl: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSoBYiEoUZ2ObCl5r0nQyNsVlwM_K3YXRAxlIQUauy4jM1UHsSEclWpijezy-FTtbkLdc1e5bOYXO8U005gn_LH_g9U9AKS0oKuH1kDlDg6sRNSnS3gEkQW9w",
-        },
-        {
-          id: "7",
-          name: "GRAN PASTOR ADULTO 21KG",
-          description: "Alimento premium con 28% de proteína, Omega 3 y 6 para articulaciones sanas y pelaje brillante.",
-          price: 38500,
-          category: "Gran pastor",
-          imageUrl: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSoBYiEoUZ2ObCl5r0nQyNsVlwM_K3YXRAxlIQUauy4jM1UHsSEclWpijezy-FTtbkLdc1e5bOYXO8U005gn_LH_g9U9AKS0oKuH1kDlDg6sRNSnS3gEkQW9w",
-        },
-        {
-          id: "8",
-          name: "GRAN PASTOR ADULTO 21KG",
-          description: "Alimento premium con 28% de proteína, Omega 3 y 6 para articulaciones sanas y pelaje brillante.",
-          price: 38500,
-          category: "Gran pastor",
-          imageUrl: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSoBYiEoUZ2ObCl5r0nQyNsVlwM_K3YXRAxlIQUauy4jM1UHsSEclWpijezy-FTtbkLdc1e5bOYXO8U005gn_LH_g9U9AKS0oKuH1kDlDg6sRNSnS3gEkQW9w",
-        },
-        {
-          id: "9",
-          name: "GRAN PASTOR ADULTO 21KG",
-          description: "Alimento premium con 28% de proteína, Omega 3 y 6 para articulaciones sanas y pelaje brillante.",
-          price: 38500,
-          category: "Gran pastor",
-          imageUrl: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSoBYiEoUZ2ObCl5r0nQyNsVlwM_K3YXRAxlIQUauy4jM1UHsSEclWpijezy-FTtbkLdc1e5bOYXO8U005gn_LH_g9U9AKS0oKuH1kDlDg6sRNSnS3gEkQW9w",
-        },
-        {
-          id: "10",
+          id: "5",
           name: "GRAN PASTOR ADULTO 21KG",
           description: "Alimento premium con 28% de proteína, Omega 3 y 6 para articulaciones sanas y pelaje brillante.",
           price: 38500,
@@ -518,9 +498,9 @@
       const addProductForm = document.getElementById("addProductForm");
       const orderWhatsappBtn = document.getElementById("orderWhatsappBtn");
       const continueShoppingBtn = document.getElementById("continueShoppingBtn");
-      const downloadCartBtn = document.getElementById("downloadCartBtn");
+      const downloadPdfBtn = document.getElementById("downloadPdfBtn");
 
-      // Renderizar productos
+      // Renderizar productos en la tienda
       function renderProducts(items) {
         productGrid.innerHTML = "";
         if (items.length === 0) {
@@ -570,7 +550,7 @@
       categorySelect.addEventListener("change", filterProducts);
       priceSelect.addEventListener("change", filterProducts);
 
-      // Carrito de compras
+      // Carrito
       window.addToCart = function (id) {
         const product = products.find((p) => p.id === id);
         const existing = cart.find((item) => item.id === id);
@@ -605,19 +585,19 @@
             total += item.price * item.quantity;
             count += item.quantity;
             const div = document.createElement("div");
-            div.className = "flex items-center justify-between bg-white p-4 rounded-xl shadow-sm";
+            div.className = "flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-gray-100";
             div.innerHTML = `
               <div class="flex items-center gap-3">
-                <img src="${item.imageUrl}" class="w-16 h-16 object-cover rounded-md" />
+                <img src="${item.imageUrl}" class="w-12 h-12 object-cover rounded-md" />
                 <div>
-                  <h4 class="font-semibold text-sm">${item.name}</h4>
+                  <h4 class="font-semibold text-xs text-gray-800">${item.name}</h4>
                   <p class="text-xs text-gray-500">$${item.price.toLocaleString()} x ${item.quantity}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="changeQuantity('${item.id}', -1)" class="w-7 h-7 bg-gray-100 rounded font-bold">-</button>
-                <span>${item.quantity}</span>
-                <button onclick="changeQuantity('${item.id}', 1)" class="w-7 h-7 bg-gray-100 rounded font-bold">+</button>
+                <button onclick="changeQuantity('${item.id}', -1)" class="w-6 h-6 bg-gray-100 rounded font-bold text-xs">-</button>
+                <span class="text-xs font-semibold">${item.quantity}</span>
+                <button onclick="changeQuantity('${item.id}', 1)" class="w-6 h-6 bg-gray-100 rounded font-bold text-xs">+</button>
               </div>
             `;
             cartItemsContainer.appendChild(div);
@@ -644,59 +624,120 @@
           alert("El carrito está vacío.");
           return;
         }
-        let message = "Hola! Quisiera realizar el siguiente pedido en Distribuidora Max:%0A";
+        const name = document.getElementById("clientName").value.trim();
+        const phone = document.getElementById("clientPhone").value.trim();
+        const address = document.getElementById("clientAddress").value.trim();
+
+        let message = `*NUEVO PEDIDO - DISTRIBUIDORA MAX*%0A%0A`;
+        if (name) message += `*Cliente:* ${name}%0A`;
+        if (phone) message += `*Teléfono:* ${phone}%0A`;
+        if (address) message += `*Dirección/Localidad:* ${address}%0A`;
+        message += `%0A*DETALLE DEL PEDIDO:*%0A`;
+
         let total = 0;
         cart.forEach((item) => {
           let subtotal = item.price * item.quantity;
           total += subtotal;
           message += `- ${item.quantity}x ${item.name} ($${subtotal.toLocaleString()})%0A`;
         });
-        message += `%0ATotal a pagar: $${total.toLocaleString()}`;
+        message += `%0A*TOTAL A PAGAR:* $${total.toLocaleString()}`;
         window.open(`https://wa.me/5493814179467?text=${message}`, "_blank");
       });
 
-      // FUNCIÓN DE DESCARGA DEL COMPROBANTE DE PEDIDO
-      downloadCartBtn.addEventListener("click", () => {
+      // GENERACIÓN Y DESCARGA DEL PDF DEL CLIENTE
+      downloadPdfBtn.addEventListener("click", () => {
         if (cart.length === 0) {
           alert("El carrito está vacío. Agrega productos antes de descargar el comprobante.");
           return;
         }
 
-        let fechaActual = new Date().toLocaleString();
-        let contenido = "========================================\n";
-        contenido += "     COMPROBANTE DE PEDIDO - DISTRIBUIDORA MAX\n";
-        contenido += "========================================\n";
-        contenido += `Fecha y Hora: ${fechaActual}\n`;
-        contenido += "----------------------------------------\n\n";
-        contenido += "DETALLE DE PRODUCTOS:\n\n";
+        const name = document.getElementById("clientName").value.trim() || "No especificado";
+        const phone = document.getElementById("clientPhone").value.trim() || "No especificado";
+        const address = document.getElementById("clientAddress").value.trim() || "No especificado";
+        const dateStr = new Date().toLocaleString();
 
         let totalGeneral = 0;
 
+        // Crear una estructura limpia de HTML para convertir a PDF
+        const element = document.createElement("div");
+        element.style.padding = "20px";
+        element.style.fontFamily = "Arial, sans-serif";
+        element.style.color = "#333";
+
+        let tableRows = "";
         cart.forEach((item, index) => {
           let subtotal = item.price * item.quantity;
           totalGeneral += subtotal;
-          contenido += `${index + 1}. ${item.name}\n`;
-          contenido += `   Cantidad: ${item.quantity}\n`;
-          contenido += `   Precio unitario: $${item.price.toLocaleString()}\n`;
-          contenido += `   Subtotal: $${subtotal.toLocaleString()}\n`;
-          contenido += "----------------------------------------\n";
+          tableRows += `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 8px; text-align: center;">${index + 1}</td>
+              <td style="padding: 8px;">${item.name}</td>
+              <td style="padding: 8px; text-align: center;">${item.quantity}</td>
+              <td style="padding: 8px; text-align: right;">$${item.price.toLocaleString()}</td>
+              <td style="padding: 8px; text-align: right; font-weight: bold;">$${subtotal.toLocaleString()}</td>
+            </tr>
+          `;
         });
 
-        contenido += `\nTOTAL A PAGAR: $${totalGeneral.toLocaleString()}\n`;
-        contenido += "========================================\n";
-        contenido += "¡Gracias por elegir a Distribuidora Max!\n";
+        element.innerHTML = `
+          <div style="border: 2px solid #ff6b6b; padding: 25px; border-radius: 10px; background: #fff;">
+            <!-- ENCABEZADO -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff6b6b; padding-bottom: 15px; margin-bottom: 20px;">
+              <div>
+                <h1 style="color: #ff6b6b; margin: 0; font-size: 26px;">DISTRIBUIDORA MAX</h1>
+                <p style="margin: 3px 0 0 0; color: #666; font-size: 12px;">Comprobante de Pedido</p>
+              </div>
+              <div style="text-align: right; font-size: 12px; color: #555;">
+                <p style="margin: 0;"><strong>Fecha:</strong> ${dateStr}</p>
+                <p style="margin: 3px 0 0 0;"><strong>Contacto:</strong> +54 9 3814 17-9467</p>
+              </div>
+            </div>
 
-        const blob = new Blob([contenido], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        
-        a.href = url;
-        a.download = `Pedido_DistribuidoraMax_${Date.now()}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+            <!-- DATOS DEL CLIENTE -->
+            <div style="background: #fdfbf0; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13px;">
+              <h3 style="margin: 0 0 8px 0; color: #e04f4f; font-size: 14px;">DATOS DEL CLIENTE</h3>
+              <p style="margin: 4px 0;"><strong>Nombre:</strong> ${name}</p>
+              <p style="margin: 4px 0;"><strong>Teléfono:</strong> ${phone}</p>
+              <p style="margin: 4px 0;"><strong>Dirección / Localidad:</strong> ${address}</p>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS -->
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+              <thead>
+                <tr style="background: #ff6b6b; color: white;">
+                  <th style="padding: 8px; text-align: center;">#</th>
+                  <th style="padding: 8px; text-align: left;">Producto</th>
+                  <th style="padding: 8px; text-align: center;">Cant.</th>
+                  <th style="padding: 8px; text-align: right;">P. Unit</th>
+                  <th style="padding: 8px; text-align: right;">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRows}
+              </tbody>
+            </table>
+
+            <!-- TOTAL -->
+            <div style="text-align: right; font-size: 18px; font-weight: bold; color: #333; margin-top: 20px; border-top: 2px solid #eee; padding-top: 10px;">
+              Total A Pagar: <span style="color: #e04f4f;">$${totalGeneral.toLocaleString()}</span>
+            </div>
+
+            <!-- PIE DE PÁGINA -->
+            <div style="margin-top: 30px; text-align: center; font-size: 11px; color: #888; border-top: 1px dashed #ccc; padding-top: 10px;">
+              ¡Gracias por tu compra en Distribuidora Max!
+            </div>
+          </div>
+        `;
+
+        const options = {
+          margin: 10,
+          filename: `Pedido_${name.replace(/\s+/g, '_')}_${Date.now()}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(options).from(element).save();
       });
 
       // Panel de Administración (Modal Login)
@@ -807,5 +848,3 @@
     </script>
   </body>
 </html>
-
-
