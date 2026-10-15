@@ -300,8 +300,8 @@
     <script>
       "use strict";
 
-      // Productos iniciales completos
-      let products = [
+      // Array de productos cargados
+      const products = [
         {
           id: "1",
           name: "RAZA ADULTO MORDIDA PEQUEÑA 15KG",
@@ -393,4 +393,119 @@
         const priceFilter = priceSelect.value;
 
         const filtered = products.filter((p) => {
-          const matchesQuery = p.name.
+          const matchesQuery = p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
+          const matchesCategory = category === "all" || p.category === category;
+          let matchesPrice = true;
+          if (priceFilter === "under30000") matchesPrice = p.price < 30000;
+          if (priceFilter === "30000to35000") matchesPrice = p.price >= 30000 && p.price <= 35000;
+          if (priceFilter === "over35000") matchesPrice = p.price > 35000;
+
+          return matchesQuery && matchesCategory && matchesPrice;
+        });
+
+        renderProducts(filtered);
+      }
+
+      searchInput.addEventListener("input", filterProducts);
+      categorySelect.addEventListener("change", filterProducts);
+      priceSelect.addEventListener("change", filterProducts);
+
+      // Carrito
+      window.addToCart = function (id) {
+        const product = products.find((p) => p.id === id);
+        const existing = cart.find((item) => item.id === id);
+        if (existing) {
+          existing.quantity++;
+        } else {
+          cart.push({ ...product, quantity: 1 });
+        }
+        updateCartUI();
+      };
+
+      window.changeQuantity = function (id, delta) {
+        const item = cart.find((i) => i.id === id);
+        if (item) {
+          item.quantity += delta;
+          if (item.quantity <= 0) {
+            cart = cart.filter((i) => i.id !== id);
+          }
+        }
+        updateCartUI();
+      };
+
+      function updateCartUI() {
+        cartItemsContainer.innerHTML = "";
+        let total = 0;
+        let count = 0;
+
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = `<p class="text-center text-gray-500 py-10">Tu carrito está vacío.</p>`;
+        } else {
+          cart.forEach((item) => {
+            total += item.price * item.quantity;
+            count += item.quantity;
+            const div = document.createElement("div");
+            div.className = "flex items-center justify-between bg-white p-3 rounded-xl shadow-sm border border-gray-100";
+            div.innerHTML = `
+              <div class="flex items-center gap-3">
+                <img src="${item.imageUrl}" class="w-12 h-12 object-contain bg-white rounded-md border p-1" />
+                <div>
+                  <h4 class="font-semibold text-xs text-gray-800">${item.name}</h4>
+                  <p class="text-xs text-gray-500">$${item.price.toLocaleString()} x ${item.quantity}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="changeQuantity('${item.id}', -1)" class="w-6 h-6 bg-gray-100 rounded font-bold text-xs">-</button>
+                <span class="text-xs font-semibold">${item.quantity}</span>
+                <button onclick="changeQuantity('${item.id}', 1)" class="w-6 h-6 bg-gray-100 rounded font-bold text-xs">+</button>
+              </div>
+            `;
+            cartItemsContainer.appendChild(div);
+          });
+        }
+
+        cartTotal.textContent = `$${total.toLocaleString()}`;
+        if (count > 0) {
+          cartCount.textContent = count;
+          cartCount.classList.remove("hidden");
+        } else {
+          cartCount.classList.add("hidden");
+        }
+      }
+
+      // Abrir / Cerrar Carrito
+      cartBtn.addEventListener("click", () => cartSidebar.classList.remove("translate-x-full"));
+      closeCart.addEventListener("click", () => cartSidebar.classList.add("translate-x-full"));
+      continueShoppingBtn.addEventListener("click", () => cartSidebar.classList.add("translate-x-full"));
+
+      // WhatsApp Checkout
+      orderWhatsappBtn.addEventListener("click", () => {
+        if (cart.length === 0) {
+          alert("El carrito está vacío.");
+          return;
+        }
+        const name = document.getElementById("clientName").value.trim();
+        const phone = document.getElementById("clientPhone").value.trim();
+        const address = document.getElementById("clientAddress").value.trim();
+
+        let message = `*NUEVO PEDIDO - DISTRIBUIDORA MAX*%0A%0A`;
+        if (name) message += `*Cliente:* ${name}%0A`;
+        if (phone) message += `*Teléfono:* ${phone}%0A`;
+        if (address) message += `*Dirección/Localidad:* ${address}%0A`;
+        message += `%0A*DETALLE DEL PEDIDO:*%0A`;
+
+        let total = 0;
+        cart.forEach((item) => {
+          let subtotal = item.price * item.quantity;
+          total += subtotal;
+          message += `- ${item.quantity}x ${item.name} ($${subtotal.toLocaleString()})%0A`;
+        });
+        message += `%0A*TOTAL A PAGAR:* $${total.toLocaleString()}`;
+        window.open(`https://wa.me/5493814179467?text=${message}`, "_blank");
+      });
+
+      // Inicializar visualización de productos al cargar la página
+      renderProducts(products);
+    </script>
+  </body>
+</html>
